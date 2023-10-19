@@ -1,0 +1,46 @@
+PARSER_BEGIN(Parser)
+package edu.curtin.calendar.parser;
+
+public class Parser {
+
+}
+
+PARSER_END(Parser)
+
+SKIP: { " " | "\n" }
+
+TOKEN: {
+    < DATE: (["0"-"9"])(["0"-"9"])(["0"-"9"])(["0"-"9"]) "-" (["0"-"9"])(["0"-"9"]) "-" (["0"-"9"])(["0"-"9"]) > |
+    < TIME: (["0"-"9"])(["0"-"9"]) ":" (["0"-"9"])(["0"-"9"]) ":" (["0"-"9"])(["0"-"9"]) > |
+    < INT: (["0"-"9"])+ > |
+    < TITLE: "\"" (["a"-"z", "A"-"Z"] (" ")?)* "\"" > |
+
+    < IDENTIFIER: ["_", "a"-"z", "A"-"Z"] (["_", "a"-"z", "A"-"Z", "0"-"9"])* >
+    < STRING: (["a"-"z", "A"-"Z", "0"-"9"])* >
+
+    < SCRIPT: "\"" (["])* "\"">
+}
+
+int validateFileInput() :
+{
+
+}
+{
+    ((
+        (
+            "event" <DATE> <TIME> <INT> ( <INT> | "all-day" ) <TITLE>
+        )
+
+        |
+
+        (
+            "plugin" ( <IDENTIFIER> ".")* <IDENTIFIER> "{" ((<IDENTIFIER> ":" "\"" <STRING> "\",")* (<IDENTIFIER> ":" "\"" <STRING> "\""))? "}"
+        )
+
+        |
+
+        (
+            "script" 
+        )
+    ))+
+}

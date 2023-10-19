@@ -11,5 +11,18 @@ dependencies {
 }
 
 application {
-    mainClass = 'edu.curtin.calendar.Calendar'
+    mainClass = 'edu.curtin.calendar.app.App'
+}
+
+run {
+    standardInput = System.in
+}
+
+javacc {
+    configs {
+        createmyparser {
+            inputFile = file('src/main/jj/edu/curtin/calendar/parser/parser.jj')
+            packageName = 'edu.curtin.calendar.parser'
+        }
+    }
 }
