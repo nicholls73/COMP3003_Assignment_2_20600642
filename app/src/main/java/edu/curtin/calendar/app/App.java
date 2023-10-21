@@ -1,12 +1,32 @@
 package edu.curtin.calendar.app;
 
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 import edu.curtin.calendar.lib.Calendar;
+import edu.curtin.calendar.lib.Event;
+import edu.curtin.calendar.lib.Plugin;
+import edu.curtin.calendar.lib.Script;
+import edu.curtin.calendar.parser.MyParser;
+import edu.curtin.calendar.parser.ParseException;
 
 public class App {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        List<Event> eventList = new ArrayList<>();
+        List<Plugin> pluginList = new ArrayList<>();
+
+        try {
+            MyParser parser = new MyParser(new FileInputStream("test2.txt"));
+            parser.inputFile(eventList, pluginList);
+            for (int i = 0; i < eventList.size(); i++) {
+                System.out.println(eventList.get(i).getTitle());
+            }
+        }
+        catch (ParseException | IOException error) {
+            System.out.println(error.getMessage());
+        }
+
+        /*Scanner scanner = new Scanner(System.in);
 
         Calendar calendar = new Calendar();
         boolean running = true;
@@ -51,6 +71,6 @@ public class App {
                 break;
             }
         }
-        scanner.close();
+        scanner.close();*/
     }
 }

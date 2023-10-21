@@ -1,46 +1,115 @@
-PARSER_BEGIN(Parser)
+PARSER_BEGIN(MyParser)
 package edu.curtin.calendar.parser;
 
-public class Parser {
+import java.util.*;
+
+import edu.curtin.calendar.lib.Event;
+import edu.curtin.calendar.lib.Plugin;
+import edu.curtin.calendar.lib.Script;
+
+public class MyParser {
 
 }
 
-PARSER_END(Parser)
+PARSER_END(MyParser)
 
 SKIP: { " " | "\n" }
 
 TOKEN: {
+    < EVENT: "event" > |
+    < PLUGIN: "plugin" > |
+    < SCRIPT: "script" > |
     < DATE: (["0"-"9"])(["0"-"9"])(["0"-"9"])(["0"-"9"]) "-" (["0"-"9"])(["0"-"9"]) "-" (["0"-"9"])(["0"-"9"]) > |
+//    < DATE: (["0"-"9"]){4} "-" (["0"-"9"]){2} "-" (["0"-"9"]){2} > |
     < TIME: (["0"-"9"])(["0"-"9"]) ":" (["0"-"9"])(["0"-"9"]) ":" (["0"-"9"])(["0"-"9"]) > |
-    < INT: (["0"-"9"])+ > |
-    < TITLE: "\"" (["a"-"z", "A"-"Z"] (" ")?)* "\"" > |
-
-    < IDENTIFIER: ["_", "a"-"z", "A"-"Z"] (["_", "a"-"z", "A"-"Z", "0"-"9"])* >
-    < STRING: (["a"-"z", "A"-"Z", "0"-"9"])* >
-
-    < SCRIPT: "\"" (["])* "\"">
+    < DURATION: (["0"-"9"])+ > |
+    < QUOTED_STRING : "\"" (~["\""] | "\\\"")* (" " (~["\""] | "\\\"")*)* "\"" > |
+    < KEY: ["_", "a"-"z", "A"-"Z"] (["_", "a"-"z", "A"-"Z", "0"-"9"])* > |
+    < IDENTIFIER: ["_", "a"-"z", "A"-"Z"] (["_", "a"-"z", "A"-"Z", "0"-"9", "."])* >
+//    < CODE : (~[])*>
 }
 
-int validateFileInput() :
+void inputFile(List<Event> eventList, List<Plugin> pluginList) :
 {
+    Event newEvent = new Event();
+    Plugin newPlugin = new Plugin();
+    Token date, time, duration, title, pluginId, key, value;
 
 }
 {
-    ((
+    (
+        <EVENT> { newEvent = new Event(); }
+        date=<DATE> { newEvent.setDate(date.image); }
         (
-            "event" <DATE> <TIME> <INT> ( <INT> | "all-day" ) <TITLE>
-        )
-
+            "all-day" { newEvent.setAllDay(); }
         |
-
-        (
-            "plugin" ( <IDENTIFIER> ".")* <IDENTIFIER> "{" ((<IDENTIFIER> ":" "\"" <STRING> "\",")* (<IDENTIFIER> ":" "\"" <STRING> "\""))? "}"
+            time=<TIME> { newEvent.setTime(time.image); }
+            duration=<DURATION> { newEvent.setDuration(Integer.valueOf(duration.image)); }
         )
-
-        |
-
+        title=<QUOTED_STRING> { newEvent.setTitle(title.image); }
+        { eventList.add(newEvent); }
+    |
+        <PLUGIN> { newPlugin = new Plugin(); }
+        pluginId=<IDENTIFIER> { newPlugin.setId(pluginId.image); }
+        "{"
         (
-            "script" 
-        )
-    ))+
+            key=<KEY> ":" value=<QUOTED_STRING> { newPlugin.addArgument(key.image, value.image); }
+            (
+                ","
+                key=<KEY> ":" value=<QUOTED_STRING> { newPlugin.addArgument(key.image, value.image); }
+            )*
+        )?
+        "}"
+        { pluginList.add(newPlugin); }
+    )+
+    <EOF>
 }
+
+Event inputEvent() :
+{
+    Event newEvent = new Event();
+    Token date, time, duration, title;
+}
+{
+    <EVENT>
+    date=<DATE> { newEvent.setDate(date.image); }
+    time=<TIME> { newEvent.setTime(time.image); }
+    (
+        duration=<DURATION> { newEvent.setDuration(Integer.valueOf(duration.image)); }
+    |
+        "all-day" { newEvent.setAllDay(); }
+    )
+    title=<QUOTED_STRING> { newEvent.setTitle(title.image); }
+    { return newEvent; }
+}
+
+Plugin inputPlugin() :
+{
+    Plugin newPlugin = new Plugin();
+    Token pluginId, key, value;
+}
+{
+    <PLUGIN>
+    pluginId=<IDENTIFIER> { newPlugin.setId(pluginId.image); }
+    "{"
+    (
+        key=<KEY> ":" value=<QUOTED_STRING> { newPlugin.addArgument(key.image, value.image); }
+        (
+            ","
+            key=<KEY> ":" value=<QUOTED_STRING> { newPlugin.addArgument(key.image, value.image); }
+        )*
+    )?
+    "}"
+    { return newPlugin; }
+}
+
+/*Script inputScript() :
+{
+    Script newScript = new Script();
+    Token code;
+}
+{
+    <SCRIPT>
+    code=(~[])* { newScript.setCode(code.image); }
+    { return newScript; }
+}*/
