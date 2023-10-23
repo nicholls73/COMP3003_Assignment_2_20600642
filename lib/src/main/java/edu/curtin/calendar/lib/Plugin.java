@@ -29,5 +29,5 @@ public class Plugin {
 
     public String getArgument(String key) {
         return arguments.get(key);
-    } 
+    }
 }

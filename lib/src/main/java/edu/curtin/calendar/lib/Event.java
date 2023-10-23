@@ -9,16 +9,14 @@ public class Event implements Comparable<Event> {
     private int duration;
     private boolean isAllDay;
     private String title;
-
-    /*public Event(LocalDateTime dateTime, int duration, boolean isAllDay, String title) {
-        this.dateTime = dateTime;
-        this.duration = duration;
-        this.isAllDay = isAllDay;
-        this.title = title;
-    }*/
+    private ResourceBundle bundle;
 
     public LocalDateTime getLocalDateTime() {
         return LocalDateTime.of(date, time);
+    }
+
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
     }
 
     public LocalDate getDate() {
@@ -75,7 +73,8 @@ public class Event implements Comparable<Event> {
     public String getDisplay() {
         String display = title;
         if (!isAllDay) {
-            display += " @ " + time.toString() + " FOR " + duration + " MINS";
+            display += " " + bundle.getString("at") + " " + time.toString() + " " + bundle.getString("for") + " "
+                    + duration + " " + bundle.getString("mins");
         }
         return display + "\n";
     }

@@ -3,7 +3,6 @@ package edu.curtin.calendar.lib;
 import java.time.*;
 import java.util.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class Calendar {
     TerminalGrid terminalGrid;
@@ -14,8 +13,9 @@ public class Calendar {
     String[] hourHeadings;
 
     List<Event> eventList;
+    ResourceBundle bundle;
 
-    public Calendar() {
+    public Calendar(ResourceBundle bundle) {
         terminalGrid = TerminalGrid.create();
         currDate = LocalDate.now();
 
@@ -24,6 +24,14 @@ public class Calendar {
         hourHeadings = new String[25];
 
         eventList = new ArrayList<Event>();
+        this.bundle = bundle;
+    }
+
+    public void updateBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
+        for (Event currEvent : eventList) {
+            currEvent.setBundle(bundle);
+        }
     }
 
     public List<Event> getEventList() {
@@ -31,6 +39,7 @@ public class Calendar {
     }
 
     public void addEvent(Event newEvent) {
+        newEvent.setBundle(bundle);
         eventList.add(newEvent);
     }
 
@@ -88,23 +97,46 @@ public class Calendar {
                     if (currDate.plusDays(j).equals(currEvent.getDate())) {
                         if (currEvent.isAllDay()) {
                             data[24][j] = currEvent.getDisplay();
-                        }
-                        else if (currEvent.getTime().getHour() == i) {
+                        } else if (currEvent.getTime().getHour() == i) {
                             data[i][j] = currEvent.getDisplay();
-                        }                     
+                        }
                     }
                 }
             }
         }
 
         for (int i = 0; i < 7; i++) {
-            dayHeadings[i] = currDate.plusDays(i).getDayOfWeek().toString() + "\n" + currDate.plusDays(i).format(DateTimeFormatter.ofPattern("dd/MM"));
+            String day = "";
+            switch (currDate.plusDays(i).getDayOfWeek()) {
+                case FRIDAY:
+                    day = bundle.getString("friday");
+                    break;
+                case MONDAY:
+                    day = bundle.getString("monday");
+                    break;
+                case SATURDAY:
+                    day = bundle.getString("saturday");
+                    break;
+                case SUNDAY:
+                    day = bundle.getString("sunday");
+                    break;
+                case THURSDAY:
+                    day = bundle.getString("thursday");
+                    break;
+                case TUESDAY:
+                    day = bundle.getString("tuesday");
+                    break;
+                case WEDNESDAY:
+                    day = bundle.getString("wednesday");
+                    break;
+            }
+            dayHeadings[i] = day + "\n" + currDate.plusDays(i).format(DateTimeFormatter.ofPattern("dd/MM"));
         }
 
         for (int i = 0; i < 24; i++) {
             hourHeadings[i] = i + ":00";
         }
-        hourHeadings[24] = "ALL-DAY";
+        hourHeadings[24] = bundle.getString("all_day");
         System.out.println();
         terminalGrid.print(data, hourHeadings, dayHeadings);
     }
