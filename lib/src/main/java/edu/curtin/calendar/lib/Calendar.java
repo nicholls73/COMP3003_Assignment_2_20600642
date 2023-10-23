@@ -2,91 +2,110 @@ package edu.curtin.calendar.lib;
 
 import java.time.*;
 import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Calendar {
     TerminalGrid terminalGrid;
-    LocalDateTime now;
+    LocalDate currDate;
 
-    List<List<String>> data;
-    List<String> dayHeadings;
-    List<String> hourHeadings;
+    String[][] data;
+    String[] dayHeadings;
+    String[] hourHeadings;
+
+    List<Event> eventList;
 
     public Calendar() {
         terminalGrid = TerminalGrid.create();
-        now = LocalDateTime.now();
+        currDate = LocalDate.now();
 
-        data = new ArrayList<List<String>>();
-        dayHeadings = new ArrayList<String>();
-        hourHeadings = new ArrayList<String>();
+        data = new String[25][7];
+        dayHeadings = new String[7];
+        hourHeadings = new String[25];
+
+        eventList = new ArrayList<Event>();
+    }
+
+    public List<Event> getEventList() {
+        return eventList;
+    }
+
+    public void addEvent(Event newEvent) {
+        eventList.add(newEvent);
     }
 
     public void nextDay() {
-        now = now.plusDays(1);
-        display();
+        currDate = currDate.plusDays(1);
     }
 
     public void previousDay() {
-        now = now.minusDays(1);
-        display();
+        currDate = currDate.minusDays(1);
     }
 
     public void nextWeek() {
-        now = now.plusWeeks(1);
-        display();
+        currDate = currDate.plusWeeks(1);
     }
 
     public void previousWeek() {
-        now = now.minusWeeks(1);
-        display();
+        currDate = currDate.minusWeeks(1);
     }
 
     public void nextMonth() {
-        now = now.plusMonths(1);
-        display();
+        currDate = currDate.plusMonths(1);
     }
 
     public void previousMonth() {
-        now = now.minusMonths(1);
-        display();
+        currDate = currDate.minusMonths(1);
     }
 
     public void nextYear() {
-        now = now.plusYears(1);
-        display();
+        currDate = currDate.plusYears(1);
     }
 
     public void previousYear() {
-        now = now.minusYears(1);
-        display();
+        currDate = currDate.minusYears(1);
     }
 
     public void today() {
-        now = LocalDateTime.now();
-        display();
+        currDate = LocalDate.now();
+    }
+
+    public void search(String searchTerm) {
+        Collections.sort(eventList);
+        for (Event currEvent : eventList) {
+            if (currEvent.getTitle().contains(searchTerm)) {
+                currDate = currEvent.getDate();
+                return;
+            }
+        }
     }
 
     public void display() {
-        data.clear();
-        for (int i = 0; i < 24; i++) {
-            data.add(Arrays.asList("", "", "", "", "", "", ""));
+        for (int i = 0; i < 25; i++) {
+            for (int j = 0; j < 7; j++) {
+                data[i][j] = "";
+                for (Event currEvent : eventList) {
+                    if (currDate.plusDays(j).equals(currEvent.getDate())) {
+                        if (currEvent.isAllDay()) {
+                            data[24][j] = currEvent.getDisplay();
+                        }
+                        else if (currEvent.getTime().getHour() == i) {
+                            data[i][j] = currEvent.getDisplay();
+                        }                     
+                    }
+                }
+            }
         }
 
-        dayHeadings.clear();
         for (int i = 0; i < 7; i++) {
-            dayHeadings.add(now.plusDays(i).getDayOfWeek().toString());
+            dayHeadings[i] = currDate.plusDays(i).getDayOfWeek().toString() + "\n" + currDate.plusDays(i).format(DateTimeFormatter.ofPattern("dd/MM"));
         }
 
-        hourHeadings.clear();
         for (int i = 0; i < 24; i++) {
-            if (i < 10) {
-                hourHeadings.add("0" + i + ":00");
-            }
-            else {
-                hourHeadings.add(i + ":00");
-            }
+            hourHeadings[i] = i + ":00";
         }
-
-        System.out.println("\n\n\n\n=====================================================================================\n\n\n\n");
+        hourHeadings[24] = "ALL-DAY";
+        System.out.println();
         terminalGrid.print(data, hourHeadings, dayHeadings);
     }
 }

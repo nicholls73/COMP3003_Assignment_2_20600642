@@ -12,65 +12,81 @@ import edu.curtin.calendar.parser.ParseException;
 
 public class App {
     public static void main(String[] args) {
-        List<Event> eventList = new ArrayList<>();
+        Locale locale = Locale.forLanguageTag("en-AU");
         List<Plugin> pluginList = new ArrayList<>();
+        List<Script> scriptList = new ArrayList<>();
+
+        Calendar calendar = new Calendar();
+        boolean running = true;
+        String input = "";
 
         try {
-            MyParser parser = new MyParser(new FileInputStream("test2.txt"));
-            parser.inputFile(eventList, pluginList);
-            for (int i = 0; i < eventList.size(); i++) {
-                System.out.println(eventList.get(i).getTitle());
-            }
+            MyParser parser = new MyParser(new FileInputStream("test.txt"));
+            parser.inputFile(calendar, pluginList, scriptList);
         }
         catch (ParseException | IOException error) {
             System.out.println(error.getMessage());
         }
 
-        /*Scanner scanner = new Scanner(System.in);
-
-        Calendar calendar = new Calendar();
-        boolean running = true;
-        String command = "";
+        Scanner scanner = new Scanner(System.in);
 
         calendar.display();
 
         while (running) {
-            System.out.print("Please Enter Command Below.");
-            command = scanner.nextLine();
+            System.out.print("+d : next day\n" +
+                             "+w : next week\n" +
+                             "+m : next month\n" +
+                             "+y : next year\n" +
+                             "-d : previous day\n" +
+                             "-w : previous week\n" +
+                             "-m : previous month\n" +
+                             "-y : previous year\n" +
+                             "t  : today\n" +
+                             "s  : search\n" +
+                             "q  : quit\n" +
+                             "Please Enter Command Below:\n");
+
+            input = scanner.nextLine();
             
-            switch (command) {
+            switch (input) {
                 case "+d":
                     calendar.nextDay();
-                break;
+                    break;
                 case "+w":
                     calendar.nextWeek();
-                break;
+                    break;
                 case "+m":
                     calendar.nextMonth();
-                break;
+                    break;
                 case "+y":
                     calendar.nextYear();
-                break;
+                    break;
                 case "-d":
                     calendar.previousDay();
-                break;
+                    break;
                 case "-w":
                     calendar.previousWeek();
-                break;
+                    break;
                 case "-m":
                     calendar.previousMonth();
-                break;
+                    break;
                 case "-y":
                     calendar.previousYear();
-                break;
+                    break;
                 case "t":
                     calendar.today();
-                break;
+                    break;
+                case "s":
+                    System.out.print("Please Enter Search Term Below:\n");
+                    input = scanner.nextLine();
+
+                    break;
                 case "q":
                     running = false;
-                break;
+                    break;
             }
+            calendar.display();
         }
         scanner.close();
-    }*/
+    }
 }

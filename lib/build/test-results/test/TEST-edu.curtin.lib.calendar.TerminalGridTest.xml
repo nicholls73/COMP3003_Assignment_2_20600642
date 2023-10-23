@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="edu.curtin.lib.calendar.TerminalGridTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2023-10-21T14:51:03" hostname="DESKTOP-GMJL9KP" time="0.114">
+<testsuite name="edu.curtin.lib.calendar.TerminalGridTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2023-10-23T12:07:41" hostname="DESKTOP-GMJL9KP" time="0.07">
   <properties/>
-  <testcase name="test2x2()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.026"/>
-  <testcase name="[1] 0" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.023"/>
+  <testcase name="test2x2()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.018"/>
+  <testcase name="[1] 0" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.012"/>
   <testcase name="[2] 1" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.002"/>
   <testcase name="[3] 12" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
   <testcase name="[4] 13" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
-  <testcase name="test2x1UnevenMultiline()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
-  <testcase name="test1x2Wrapped1stCol()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
-  <testcase name="test1x2Wrapped2ndCol()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
-  <testcase name="test1x2UnevenMultiline()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.0"/>
+  <testcase name="test2x1UnevenMultiline()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.0"/>
+  <testcase name="test1x2Wrapped1stCol()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.0"/>
+  <testcase name="test1x2Wrapped2ndCol()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.0"/>
+  <testcase name="test1x2UnevenMultiline()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
   <testcase name="test2x3WrappedAllCols()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
   <testcase name="test1x1Empty()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
-  <testcase name="test1x1Wrapped()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.0"/>
-  <testcase name="test2x2NestedLists()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.002"/>
-  <testcase name="test2x3Headings()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.004"/>
+  <testcase name="test1x1Wrapped()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
+  <testcase name="test2x2NestedLists()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
+  <testcase name="test2x3Headings()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.003"/>
   <testcase name="test1x2Multiline()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
   <testcase name="test1x2WrappedAllCols()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>
   <testcase name="test2x1Multiline()" classname="edu.curtin.lib.calendar.TerminalGridTest" time="0.001"/>

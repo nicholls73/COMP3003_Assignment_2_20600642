@@ -1,8 +1,9 @@
 package edu.curtin.calendar.lib;
 
 import java.time.*;
+import java.util.*;
 
-public class Event {
+public class Event implements Comparable<Event> {
     private LocalDate date;
     private LocalTime time;
     private int duration;
@@ -16,8 +17,16 @@ public class Event {
         this.title = title;
     }*/
 
-    public LocalDateTime getDateTime() {
+    public LocalDateTime getLocalDateTime() {
         return LocalDateTime.of(date, time);
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getTime() {
+        return time;
     }
 
     public void setDate(String newDate) {
@@ -61,5 +70,18 @@ public class Event {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDisplay() {
+        String display = title;
+        if (!isAllDay) {
+            display += " @ " + time.toString() + " FOR " + duration + " MINS";
+        }
+        return display + "\n";
+    }
+
+    @Override
+    public int compareTo(Event otherEvent) {
+        return LocalDateTime.of(date, time).compareTo(otherEvent.getLocalDateTime());
     }
 }
