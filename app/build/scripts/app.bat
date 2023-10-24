@@ -71,7 +71,7 @@ set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\lib.jar;%APP_HOME%\lib\jansi
 
 
 @rem Execute app
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %APP_OPTS%  -classpath "%CLASSPATH%" edu.curtin.calendar.app.App %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %APP_OPTS%  -classpath "%CLASSPATH%" edu.curtin.app.App %*
 
 :end
 @rem End local scope for the variables with windows NT shell
