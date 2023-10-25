@@ -1,23 +1,32 @@
-event 2023-10-29 15:00:00 90 "Meeting 1"
-event 2023-10-31 08:30:45 45 "Meeting 2"
+event 2023-10-29 15:00:45 90 "Meeting 1"
+event 2023-10-31 08:10:00 30 "Meeting 2"
+event 2023-10-31 08:45:00 45 "Meeting 3"
+plugin edu.curtin.calplugins.Repeat
+{
+    title: "COMP3003 Class",
+    startDate: "2023-11-02",
+    startTime: "10:00:00",
+    duration: "60",
+    repeat: "5"
+}
+
+script "
+calendar.addNewEvent(""My Birthday!!"", ""2023-10-20"")
+"
+
 plugin edu.curtin.calplugins.Repeat
 {
     title: "Water Garden",
     startDate: "2023-10-25",
-    startTime: "10:00:00",
-    duration: "60",
     repeat: "2"
 }
+
+event 2024-03-31 all-day "Easter"
+
 event 2023-12-25
     all-day "Christmas Day"
-plugin com.example.plugin2pkg.DemoPlugin { keyA: "X", keyB: "Y", keyC: "Z" }
 
 script "
 # I'm a Python script!
-calendar.addNewEvent(""test"", ""2023-10-26"")
-"
-
-script "
-# I'm a Python script!
-print(""hello world"")
+calendar.addNewEvent(""John's Bar Mitzvah"", ""2023-11-02"")
 "

@@ -10,7 +10,6 @@ public class Script {
     public void setCode(String code) {
         code = code.substring(1, code.length() - 1);
         code = code.replaceAll("\"\"", "\"");
-        System.out.println(code);
         this.code = code;
     }
 

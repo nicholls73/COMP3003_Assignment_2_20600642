@@ -3,24 +3,24 @@ package edu.curtin.lib;
 import java.util.*;
 
 public class Plugin {
-    private String Id;
-    private Hashtable<String, String> arguments;
+    private String id;
+    private Dictionary<String, String> arguments;
 
     public Plugin() {
         arguments = new Hashtable<>();
     }
 
-    public Plugin(String Id) {
-        this.Id = Id;
+    public Plugin(String id) {
+        this.id = id;
         arguments = new Hashtable<>();
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
-    public void setId(String Id) {
-        this.Id = Id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void addArgument(String key, String value) {
@@ -29,5 +29,9 @@ public class Plugin {
 
     public String getArgument(String key) {
         return arguments.get(key);
+    }
+
+    public Dictionary<String, String> getArguments() {
+        return arguments;
     }
 }

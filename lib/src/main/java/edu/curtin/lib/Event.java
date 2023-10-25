@@ -3,6 +3,12 @@ package edu.curtin.lib;
 import java.time.*;
 import java.util.*;
 
+/**
+ * Represents an event with a date, time, duration, title, and resource bundle.
+ * Provides methods to get and set the event's properties, as well as a method
+ * to get a display string.
+ * Implements the Comparable interface to allow sorting by date and time.
+ */
 public class Event implements Comparable<Event> {
     private LocalDate date;
     private LocalTime time;

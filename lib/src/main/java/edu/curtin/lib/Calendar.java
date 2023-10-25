@@ -1,12 +1,21 @@
+/**
+ * This class represents a calendar that implements the APIInterface.
+ * It provides methods to add, search and display events.
+ * The calendar can be navigated to the next or previous day, week, month or year.
+ * It also provides a method to display events on a terminal grid.
+ */
 package edu.curtin.lib;
 
 import java.text.Normalizer;
 import java.time.*;
 import java.util.*;
+
+import edu.curtin.api.APIInterface;
+
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
-public class Calendar {
+public class Calendar implements APIInterface {
     TerminalGrid terminalGrid;
     LocalDate currDate;
 
@@ -25,7 +34,7 @@ public class Calendar {
         dayHeadings = new String[7];
         hourHeadings = new String[25];
 
-        eventList = new ArrayList<Event>();
+        eventList = new ArrayList<>();
         this.bundle = bundle;
     }
 
@@ -45,6 +54,8 @@ public class Calendar {
         eventList.add(newEvent);
     }
 
+    @Override
+    // Add a new event with a time and duration.
     public void addNewEvent(String title, String date, String time, String duration) {
         Event newEvent = new Event();
         newEvent.setDate(date);
@@ -55,6 +66,8 @@ public class Calendar {
         eventList.add(newEvent);
     }
 
+    @Override
+    // Add a new event that is all day.
     public void addNewEvent(String title, String date) {
         Event newEvent = new Event();
         newEvent.setDate(date);
@@ -101,7 +114,7 @@ public class Calendar {
     }
 
     public void search(String searchTerm) {
-        Collections.sort(eventList);
+        Collections.sort(eventList); // Sort the list by date.
         for (Event currEvent : eventList) {
             if (matches(currEvent.getTitle(), searchTerm)) {
                 currDate = currEvent.getDate();
@@ -115,23 +128,23 @@ public class Calendar {
     }
 
     public void display() {
-        for (int i = 0; i < 25; i++) {
-            for (int j = 0; j < 7; j++) {
-                data[i][j] = "";
-                for (Event currEvent : eventList) {
-                    if (currDate.plusDays(j).equals(currEvent.getDate())) {
-                        if (currEvent.isAllDay()) {
-                            data[24][j] = currEvent.getDisplay();
-                        } else if (currEvent.getTime().getHour() == i) {
-                            data[i][j] = currEvent.getDisplay();
+        for (int i = 0; i < 25; i++) { // Iterate over each row.
+            for (int j = 0; j < 7; j++) { // Iterate over each column.
+                data[i][j] = ""; // Clear the cell.
+                for (Event currEvent : eventList) { // Iterate over each event.
+                    if (currDate.plusDays(j).equals(currEvent.getDate())) { // If the event is on the day of the column.
+                        if (currEvent.isAllDay()) { // If the event is all day
+                            data[24][j] = data[24][j] + "\n" + currEvent.getDisplay();
+                        } else if (currEvent.getTime().getHour() == i) { // If the event is at the hour of the row.
+                            data[i][j] = data[i][j] + "\n" + currEvent.getDisplay();
                         }
                     }
                 }
             }
         }
 
-        for (int i = 0; i < 7; i++) {
-            String day = "";
+        for (int i = 0; i < 7; i++) { // Iterate over each column.
+            String day = ""; // Clear the cell.
             switch (currDate.plusDays(i).getDayOfWeek()) {
                 case FRIDAY:
                     day = bundle.getString("friday");
@@ -155,25 +168,17 @@ public class Calendar {
                     day = bundle.getString("wednesday");
                     break;
             }
-            // dayHeadings[i] = day + "\n" +
-            // currDate.plusDays(i).format(DateTimeFormatter.ofPattern("dd/MM"));
-            /*
-             * dayHeadings[i] = day + "\n"
-             * + currDate.plusDays(i).format(
-             * DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(bundle.
-             * getLocale()));
-             */
 
             DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
                     .withLocale(bundle.getLocale());
-            dayHeadings[i] = day + "\n" + currDate.plusDays(i).format(formatter);
+            dayHeadings[i] = day + "\n" + currDate.plusDays(i).format(formatter); // Set the column headers (day).
         }
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 24; i++) { // Iterate over each row.
             hourHeadings[i] = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(bundle.getLocale())
-                    .format(LocalTime.of(i, 0));
+                    .format(LocalTime.of(i, 0)); // Set the row headers (hour).
         }
-        hourHeadings[24] = bundle.getString("all_day");
+        hourHeadings[24] = bundle.getString("all_day"); // Set the last row header to "all-day".
         System.out.println();
         terminalGrid.print(data, hourHeadings, dayHeadings);
     }

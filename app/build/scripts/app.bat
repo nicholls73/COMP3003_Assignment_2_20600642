@@ -67,7 +67,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\lib.jar;%APP_HOME%\lib\jansi-2.4.0.jar;%APP_HOME%\lib\commons-text-1.10.0.jar;%APP_HOME%\lib\commons-lang3-3.12.0.jar
+set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\jython-standalone-2.7.1.jar;%APP_HOME%\lib\lib.jar;%APP_HOME%\lib\commons-text-1.10.0.jar;%APP_HOME%\lib\commons-lang3-3.12.0.jar
 
 
 @rem Execute app
